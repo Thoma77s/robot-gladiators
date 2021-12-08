@@ -1,4 +1,5 @@
 var fightOrSkip = function() {
+    
     //ask player if they'd like to fight or run
     var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
     
@@ -22,7 +23,12 @@ var fightOrSkip = function() {
 }
 };
 var fight = function(enemy) {
+    var isPlayerTurn = true;
+    if (Math.random() > 0.5) {
+        isPlayerTurn = false;
+    }
     while (playerInfo.health > 0 && enemy.health > 0) {
+        if (isPlayerTurn) {
         if (fightOrSkip()) {
             // if true, leave fight by breaking loop
             break;
@@ -44,7 +50,7 @@ var fight = function(enemy) {
     else {
         window.alert(enemy.name + " still has " + enemy.health + " health left.")
     }
-
+    } else {
     // Subtract the value of 'enemy.attack' from the value of 'playerInfo.health' and use that result to update the value in the 'playerInfo.health' variable.
     var damage = randomNumber(enemy.attack - 3, enemy.attack);
     playerInfo.health = Math.max(0, playerInfo.health - damage);
@@ -62,6 +68,8 @@ var fight = function(enemy) {
     else {
         window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
         }
+    }
+    isPlayerTurn = !isPlayerTurn;
     }  
 }
 
@@ -115,24 +123,24 @@ var shop = function() {
     shopOptionPrompt = parseInt(shopOptionPrompt);
     switch (shopOptionPrompt) {
         case 1:
-            if (playerMoney >= 7) {
+            if (playerInfo.money >= 7) {
             window.alert("Refilling player's health by 20 for 7 dollars.");
             
             // increase health and decrease money
-            playerHealth = playerHealth + 20;
-            playerMoney = playerMoney - 7;
+            playerInfo.health = playerInfo.health + 20;
+            playerInfo.money = playerInfo.money - 7;
             }
             else {
                 window.alert("You don't have enough money!")
             }
             break;
         case 2:
-            if (playerMoney >= 7) {
+            if (playerInfo.money >= 7) {
             window.alert("Upgrading player's attack by 6 for 7 dollars.");
 
             //increase attack and decrease money
-            playerAttack = playerAttack + 6;
-            playerMoney = playerMoney - 7;
+           playerInfo.attack =playerInfo.attack + 6;
+            playerInfo.money = playerInfo.money - 7;
             }
             else {
                 window.alert("You don't have enough money");
@@ -166,6 +174,7 @@ var getPlayerName = function() {
         name = prompt("What is your robot's name?");
     }
     console.log("Your robot's name is" + name);
+    return name;
 };
 var playerInfo = {
     name: getPlayerName(),
